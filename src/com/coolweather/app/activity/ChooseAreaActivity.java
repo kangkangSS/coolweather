@@ -2,6 +2,7 @@ package com.coolweather.app.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.coolweather.app.R;
 import com.coolweather.app.db.CoolWeatherDB;
 import com.coolweather.app.model.City;
@@ -10,10 +11,15 @@ import com.coolweather.app.model.Province;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
+
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -49,6 +55,15 @@ public class ChooseAreaActivity extends ActionBarActivity {
 		// TODO 自动生成的方法存根
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choose_area);
+		
+		SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(ChooseAreaActivity.this);
+		if(prefs.getBoolean("city_selected", false)){
+			Intent intent=new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+			startActivity(intent);
+			finish();
+			return;
+		}
+		
 		listView=(ListView) findViewById(R.id.list_View);
 		textTitle=(TextView) findViewById(R.id.text_title);
 		adapter=new ArrayAdapter<String>(ChooseAreaActivity.this,android.R.layout.simple_list_item_1,dataList);
@@ -66,12 +81,22 @@ public class ChooseAreaActivity extends ActionBarActivity {
 				}else if(currentLevel==LEVEL_CITY){
 					selectedCity=cityList.get(arg2);
 					queryCounties();
+				}else if(currentLevel==LEVEL_COUNTY){
+					String countyCode=countyList.get(arg2).getCountyCode();
+					Intent intent=new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+					intent.putExtra("county_code", countyCode);
+					startActivity(intent);
+					finish();
 				}
 			}
 
 			
 		});
 		queryProvinces();
+		
+		
+		Log.d("ChooseActivity", "OK");
+		
 	}
 
 	private void queryProvinces() {
