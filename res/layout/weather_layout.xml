@@ -15,6 +15,22 @@
             android:layout_centerInParent="true"
             android:textColor="#fff"
             android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/BtnChangeCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="切换城市" />
+
+        <Button
+            android:id="@+id/BtnRefreshWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="更新天气" />
         
     </RelativeLayout>
 

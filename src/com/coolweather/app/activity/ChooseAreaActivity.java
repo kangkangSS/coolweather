@@ -50,6 +50,8 @@ public class ChooseAreaActivity extends ActionBarActivity {
 	
 	private int currentLevel;
 	
+	private boolean fromWeatherActivityFlg;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO 自动生成的方法存根
@@ -57,7 +59,8 @@ public class ChooseAreaActivity extends ActionBarActivity {
 		setContentView(R.layout.choose_area);
 		
 		SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(ChooseAreaActivity.this);
-		if(prefs.getBoolean("city_selected", false)){
+		fromWeatherActivityFlg=getIntent().getBooleanExtra("fromWeatherActivity", false);
+		if(prefs.getBoolean("city_selected", false)&&!fromWeatherActivityFlg){
 			Intent intent=new Intent(ChooseAreaActivity.this,WeatherActivity.class);
 			startActivity(intent);
 			finish();
@@ -227,6 +230,10 @@ public class ChooseAreaActivity extends ActionBarActivity {
 		}else if(currentLevel==LEVEL_CITY){
 			queryProvinces();
 		}else{
+			if(fromWeatherActivityFlg){
+				Intent intent=new Intent(ChooseAreaActivity.this,WeatherActivity.class);
+				startActivity(intent);
+			}
 			finish();
 		}
 	}
